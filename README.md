@@ -116,3 +116,4 @@ plt.show()
 
 **Styling Your Graph**: You are not required to style your graph in any particular way. Feel free to adjust colors, line styles, and the rotation of the x-axis ticks. You will need to title your graph "Grade Trend" and label the Y-axis as "Grade".# canvas_data_analyzer
 # canvas_data_analyzer
+# canvas_data_analyzer
