@@ -9,12 +9,13 @@ own local version anyway.
 @author: acbart
 """
 __version__ = 7
-import requests
+
 import os
 import json
 import sqlite3
 import sys 
 import re
+import requests
 
 def get_user(user_id):
     return get("users/self/profile", user_id)
