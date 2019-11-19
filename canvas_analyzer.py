@@ -48,6 +48,7 @@ Consumes a string representing the user token (e.g., 'hermione') and calls all t
 diagram. The main function will be graded on Web-CAT based on the functions you have implemented; only include the 
 functions you have implemented, but make sure you correctly call all the functions you do implement.
 '''
+
 # 2) print_user_info
 def print_user_info(user:[dict]):
     print("Name: " + user["name"])
@@ -61,6 +62,7 @@ It does not return anything. Note: this function consumes a dictionary, not a st
 it does NOT call the canvas_requests.get_user function, it consumes the result of calling 
 the function.
 '''
+
 # 3) filter_available_courses
 def filter_available_courses(classes:[dict])->[dict]:
     new={}
@@ -73,6 +75,7 @@ def filter_available_courses(classes:[dict])->[dict]:
 Consumes a list of Course dictionaries and returns a list of Course dictionaries where the workflow_state key's 
 value is 'available' (as opposed to 'completed' or something else).
 '''
+
 # 4) print_courses
 def print_courses(courses:[dict]):
     for a_course in courses:
@@ -81,6 +84,7 @@ def print_courses(courses:[dict]):
 '''
 Consumes a list of Course dictionaries and prints out the ID and name of each course on separate lines.
 '''
+
 # 5) get_course_ids
 def get_course_ids(courses:[dict])->[int]:
     new=[]
@@ -91,6 +95,7 @@ def get_course_ids(courses:[dict])->[int]:
 '''
 Consumes a list of Course dictionaries and returns a list of integers representing course IDs.
 '''
+
 # 6) choose_course
 numbers=[52,15,23,24]
 def choose_course(numbers:[int])->int:
@@ -105,28 +110,39 @@ Consumes a list of integers representing course IDs and prompts the user to ente
 integer representing the user's chosen course ID. If the user does not enter a valid ID, the function repeatedly 
 loops until they type in a valid ID. You will need to use the input function to get the user's choice.
 '''
+
 # 7) summarize_points
 def summarize_points(submissions:[dict]):
-  points_possible_so_far=(sum(points_possible)*group_weight)
-  points_obtained=(sum(submission_score)*group_weight)
-  print("Points Possible: " + str(points_possible_so_far))
-  print("Points Obtained: " + str(points_obtained))
-  print("Current Grade: " + str(round((points_obtained/points_possible_so_far)*100,1)))
+    points_obtained=0
+    points_possible_so_far=0
+    for a_sub in submissions:
+        if a_sub["score"] is not None:
+
+            group_weight = a_sub["assignment"]["group"]["group_weight"]
+            score = a_sub["score"] * group_weight
+            points_obtained += score
+            current_grade = round(((points_obtained / score) * 100), 1)
+            points = a_sub["assignment"]["points_possible"] * group_weight
+            points_possible_so_far += points
+
+        print("Current Grade: " + str(current_grade))
+        print("Points possible so far: " + str(points_possible_so_far))
+        print("Points Obtained: " + str(points_obtained))
 
 '''
-Consumes a list of Submission dictionaries and prints out three summary statistics about the submissions where 
-there is a score (i.e. the submissions score is not None):
+summarize_points: Consumes a list of Submission dictionaries and prints out three summary statistics about the 
+submissions where there is a score (i.e. the submissions score is not None):
 ->Points possible so far: The sum of the assignments' points_possible multiplied by the assignment's group_weight.
 ->Points obtained: The sum of the submissions' score multiplied by the assignment's group_weight.
 ->Current grade: the Points obtained divided by the Points possible so far, multiplied by 100 and rounded. 
-    Note that you can use the built-in round function.
+Note that you can use the built-in round function.
 '''
 # 8) summarize_groups
 def summarize_groups(submissions:[dict]):
     group_score = {}
     group_points = {}
     for a_value in submissions:
-        if submissions["score"] is not None:
+        if a_value["score"] is not None:
             group_name = a_value["assignment"]["group"]["name"]
             if group_name not in group_score:
                 group_score[group_name] = 0
@@ -145,6 +161,7 @@ ignore the submission without a score (i.e. the submission's score is None). You
 Dictionary Summing Pattern to implement this function. This function is a little difficult, so you might want
 to complete the next function first.
 '''
+
 # 9) plot_scores
 import datetime
 a_string_date = "2017-08-30T16:20:00Z"
@@ -171,8 +188,13 @@ and label the Y-axis as "Number of Assignments".
 '''
 
 # 10) plot_grade_trends
-#def plot_grade_trends (submissions:dict):
-    #pass
+def plot_grade_trends (submissions:dict):
+
+
+
+
+
+
 '''
 Consumes a list of Submission dictionaries and plots the grade trend of the submissions as a line plot.
 The grade trend contains three lines (ordered by the assignments' due_at date) that show you the range of grades you
