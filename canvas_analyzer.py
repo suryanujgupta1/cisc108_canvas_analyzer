@@ -22,8 +22,8 @@ user = {
         "Bio": "Interested in Magic, Learning, and House Elf Rights",
     }
 # 1) main
-import canvas_requests
 import matplotlib.pyplot as plt
+import canvas_requests
 
 def main (user_id):
     user = canvas_requests.get_user(user_id)
@@ -50,10 +50,10 @@ functions you have implemented, but make sure you correctly call all the functio
 '''
 # 2) print_user_info
 def print_user_info(user:[dict]):
-    print("Name: " + user["Name"])
-    print("Title: " +user["Title"])
-    print("Primary Email: " +user["Primary Email"])
-    print("Bio: " +user["Bio"])
+    print("Name: " + user["name"])
+    print("Title: " +user["title"])
+    print("Primary Email: " +user["primary_email"])
+    print("Bio: " +user["bio"])
 
 '''
 Consumes a User dictionary and prints out the user's name, title, primary email, and bio. 
@@ -92,6 +92,7 @@ def get_course_ids(courses:[dict])->[int]:
 Consumes a list of Course dictionaries and returns a list of integers representing course IDs.
 '''
 # 6) choose_course
+numbers=[52,15,23,24]
 def choose_course(numbers:[int])->int:
   value=input("Enter course id: ")
   value=int(value)
