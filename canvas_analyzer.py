@@ -30,8 +30,8 @@ def main (user_id):
     print_user_info(user)
     #above is user info
     courses = canvas_requests.get_courses(user_id)
-    courses = filter_available_courses(courses)
-    print_courses(courses)
+    filtered_courses = filter_available_courses(courses)
+    print_courses(filtered_courses)
     #above is courses info
     course_ids = get_course_ids(courses)
     course_id = choose_course(course_ids)
@@ -76,7 +76,7 @@ value is 'available' (as opposed to 'completed' or something else).
 # 4) print_courses
 def print_courses(courses:[dict]):
     for a_course in courses:
-        print(str(a_course["id"]) + " : " + a_course["name"])
+        print("\t", str(a_course["id"]) + " : " + a_course["name"])
 
 '''
 Consumes a list of Course dictionaries and prints out the ID and name of each course on separate lines.
@@ -106,7 +106,7 @@ integer representing the user's chosen course ID. If the user does not enter a v
 loops until they type in a valid ID. You will need to use the input function to get the user's choice.
 '''
 # 7) summarize_points
-def summarize_points(assignment_points:[dict]):
+def summarize_points(submissions:[dict]):
   points_possible_so_far=(sum(points_possible)*group_weight)
   points_obtained=(sum(submission_score)*group_weight)
   print("Points Possible: " + str(points_possible_so_far))
