@@ -98,7 +98,7 @@ Consumes a list of Course dictionaries and returns a list of integers representi
 '''
 
 # 6) choose_course
-#numbers are  52,15,23, and 34. This function repeats until one of those #s in inputed. 
+#numbers are  52,15,23, and 34. This function repeats until one of those #s in inputed.
 def choose_course(numbers:[int])->int:
   value=input("Enter course id: ")
   value=int(value)
@@ -203,13 +203,15 @@ def plot_grade_trends (submissions:dict):
             score=0
         weight_score+=score*weightchanger
         points_possible=a_sub["assignment"]["points_possible"]
+
         if a_sub["graded_at"] is not None:
             notgradedscore+=points_possible*weightchanger
         else:
             notgradedscore+=score*weightchanger
+
         maximum=[avalue/maxweight_score for avalue in maximum]
         lowest=[avalue/maxweight_score for avalue in lowest]
-        maximum=[avalue/maxweight_score for avalue in highest]
+        highest=[avalue/maxweight_score for avalue in highest]
         running_dates=[]
         print(maximum)
         print(maxweight_score)
