@@ -24,6 +24,7 @@ user = {
 # 1) main
 import matplotlib.pyplot as plt
 import canvas_requests
+import datetime
 
 def main (user_id):
     user = canvas_requests.get_user(user_id)
@@ -40,7 +41,7 @@ def main (user_id):
     summarize_points(submissions)
     summarize_groups(submissions)
     plot_scores(submissions)
-    #plot_grade_trends(submissions)
+    plot_grade_trends(submissions)
     #above is submissions info
 
 '''
@@ -97,7 +98,7 @@ Consumes a list of Course dictionaries and returns a list of integers representi
 '''
 
 # 6) choose_course
-numbers=[52,15,23,24]
+#numbers are  52,15,23, and 34. This function repeats until one of those #s in inputed. 
 def choose_course(numbers:[int])->int:
   value=input("Enter course id: ")
   value=int(value)
@@ -117,14 +118,12 @@ def summarize_points(submissions:[dict]):
     points_possible_so_far=0
     for a_sub in submissions:
         if a_sub["score"] is not None:
-
             group_weight = a_sub["assignment"]["group"]["group_weight"]
             score = a_sub["score"] * group_weight
             points_obtained += score
             current_grade = round(((points_obtained / score) * 100), 1)
             points = a_sub["assignment"]["points_possible"] * group_weight
             points_possible_so_far += points
-
         print("Current Grade: " + str(current_grade))
         print("Points possible so far: " + str(points_possible_so_far))
         print("Points Obtained: " + str(points_obtained))
@@ -189,11 +188,39 @@ and label the Y-axis as "Number of Assignments".
 
 # 10) plot_grade_trends
 def plot_grade_trends (submissions:dict):
-
-
-
-
-
+    lowest=[]
+    highest=[]
+    maximum=[]
+    weight_score=0
+    maxweight_score=0
+    notgradedscore=0
+    for a_sub in submissions:
+        weightchanger=a_sub["assignment"]["group"]["group_weight"]
+        score=0
+        if a_sub["score"]:
+            score=a_sub["score"]
+        else:
+            score=0
+        weight_score+=score*weightchanger
+        points_possible=a_sub["assignment"]["points_possible"]
+        if a_sub["graded_at"] is not None:
+            notgradedscore+=points_possible*weightchanger
+        else:
+            notgradedscore+=score*weightchanger
+        maximum=[avalue/maxweight_score for avalue in maximum]
+        lowest=[avalue/maxweight_score for avalue in lowest]
+        maximum=[avalue/maxweight_score for avalue in highest]
+        running_dates=[]
+        print(maximum)
+        print(maxweight_score)
+        for a_sub in submissions:
+            running_dates.append(a_sub["assignment"]["due_at"])
+            plt.plot(running_dates, highest, label="Highest")
+            plt.plot(running_dates, lowest, label="Lowest")
+            plt.plot(running_dates, maximum, label="Maximum")
+            plt.title("Grade Trend")
+            plt.ylabel("Grade")
+            plt.show()
 
 '''
 Consumes a list of Submission dictionaries and plots the grade trend of the submissions as a line plot.
@@ -203,6 +230,7 @@ could get in the course:
 ->Lowest: The running sum of graded submission scores followed by the running sum if you scored 0 on all ungraded assignments.
 ->Maximum: The running sum of the points possible on all assignments in the course.
 '''
+
 # Keep any function tests inside this IF statement to ensure
 # that your `test_my_solution.py` does not execute it.
 if __name__ == "__main__":
