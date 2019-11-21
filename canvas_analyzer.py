@@ -12,7 +12,7 @@ Refer to the instructions on Canvas for more information.
 
 
 "I have neither given nor received help on this assignment."
-author: YOUR NAME HERE
+author: SURYANUJ GUPTA
 """
 __version__ = 7
 user = {
@@ -24,24 +24,23 @@ user = {
 # 1) main
 import matplotlib.pyplot as plt
 import canvas_requests
-import datetime
 
 def main (user_id):
-    user = canvas_requests.get_user(user_id)
-    print_user_info(user)
+    user = canvas_requests.get_user (user_id)
+    print_user_info (user)
     #above is user info
-    courses = canvas_requests.get_courses(user_id)
-    filtered_courses = filter_available_courses(courses)
-    print_courses(filtered_courses)
+    courses = canvas_requests.get_courses (user_id)
+    filtered_courses = filter_available_courses (courses)
+    print_courses (filtered_courses)
     #above is courses info
-    course_ids = get_course_ids(courses)
-    course_id = choose_course(course_ids)
+    course_ids = get_course_ids (courses)
+    course_id = choose_course (course_ids)
     #above is course ids and course id info
-    submissions = canvas_requests.get_submissions(user_id, course_id)
-    summarize_points(submissions)
-    summarize_groups(submissions)
-    plot_scores(submissions)
-    plot_grade_trends(submissions)
+    submissions = canvas_requests.get_submissions (user_id, course_id)
+    summarize_points (submissions)
+    summarize_groups (submissions)
+    plot_scores (submissions)
+    plot_grade_trends (submissions)
     #above is submissions info
 
 '''
@@ -51,7 +50,7 @@ functions you have implemented, but make sure you correctly call all the functio
 '''
 
 # 2) print_user_info
-def print_user_info(user:[dict]):
+def print_user_info (user:[dict]):
     print("Name: " + user["name"])
     print("Title: " +user["title"])
     print("Primary Email: " +user["primary_email"])
@@ -65,8 +64,8 @@ the function.
 '''
 
 # 3) filter_available_courses
-def filter_available_courses(classes:[dict])->[dict]:
-    new={}
+def filter_available_courses (classes:[dict]) -> [dict]:
+    new = {}
     for a_class in classes:
         if a_class["workflow_state"] is "available":
             new.append(a_class)
@@ -78,7 +77,7 @@ value is 'available' (as opposed to 'completed' or something else).
 '''
 
 # 4) print_courses
-def print_courses(courses:[dict]):
+def print_courses (courses:[dict]):
     for a_course in courses:
         print("\t", str(a_course["id"]) + " : " + a_course["name"])
 
@@ -87,8 +86,8 @@ Consumes a list of Course dictionaries and prints out the ID and name of each co
 '''
 
 # 5) get_course_ids
-def get_course_ids(courses:[dict])->[int]:
-    new=[]
+def get_course_ids (courses:[dict]) -> [int]:
+    new = []
     for a_course in courses:
         new.append(a_course["id"])
     return new
@@ -99,11 +98,11 @@ Consumes a list of Course dictionaries and returns a list of integers representi
 
 # 6) choose_course
 #numbers are  52,15,23, and 34. This function repeats until one of those #s in inputed.
-def choose_course(numbers:[int])->int:
-  value=input("Enter course id: ")
-  value=int(value)
+def choose_course (numbers:[int]) -> int:
+  value = input("Enter course id: ")
+  value = int(value)
   while value not in numbers:
-    value=int(input("Enter course id: "))
+    value = int(input("Enter course id: "))
   return value
 
 '''
@@ -113,9 +112,9 @@ loops until they type in a valid ID. You will need to use the input function to 
 '''
 
 # 7) summarize_points
-def summarize_points(submissions:[dict]):
-    points_obtained=0
-    points_possible_so_far=0
+def summarize_points (submissions:[dict]):
+    points_obtained = 0
+    points_possible_so_far = 0
     for a_submission in submissions:
         if a_submission["score"] is not None:
             group_weight = a_submission["assignment"]["group"]["group_weight"]
@@ -137,7 +136,7 @@ submissions where there is a score (i.e. the submissions score is not None):
 Note that you can use the built-in round function.
 '''
 # 8) summarize_groups
-def summarize_groups(submissions:[dict]):
+def summarize_groups (submissions:[dict]):
     group_score = {}
     group_points = {}
     for a_value in submissions:
@@ -172,10 +171,10 @@ def plot_scores(submissions: [dict]):
         if a_submission["assignment"]["points_possible"] and a_submission["score"] != None:
             percent_of_score = 100 * a_submission["score"] / a_submission["assignment"]["points_possible"]
             percent_of_scores.append(percent_of_score)
-    plt.hist(percent_of_scores)
-    plt.title("Distribution of Grades")
-    plt.xlabel("Grades")
-    plt.ylabel("Number of Assignments")
+    plt.hist (percent_of_scores)
+    plt.title ("Distribution of Grades")
+    plt.xlabel ("Grades")
+    plt.ylabel ("Number of Assignments")
     plt.show()
 
 '''
@@ -188,35 +187,39 @@ and label the Y-axis as "Number of Assignments".
 
 # 10) plot_grade_trends
 def plot_grade_trends (submissions:dict):
-    running_lowest=[]
-    running_highest=[]
-    running_maximum=[]
-    weight_score=0
-    maximum_weight=0
-    not_graded_score=0
+    running_highest = []
+    running_lowest = []
+    running_maximum = []
+    weight_score = 0
+    maximum_weight = 0
+    not_graded_score = 0
     for a_submission in submissions:
-        weight_change=a_submission["assignment"]["group"]["group_weight"]
-        score=0
+        weight_change = a_submission["assignment"]["group"]["group_weight"]
+        score = 0
         if a_submission["score"]:
-            score=a_submission["score"]
+            score = a_submission["score"]
         else:
             score
-        weight_score+=score*weight_change
-        points_possible=a_submission["assignment"]["points_possible"]
+        weight_score += score * weight_change
+        points_possible = a_submission["assignment"]["points_possible"]
         if a_submission["graded_at"] is not None:
-            not_graded_score+=points_possible*weight_change
+            not_graded_score += points_possible * weight_change
         else:
-            not_graded_score+=score*weight_change
+            not_graded_score += score * weight_change
 
         maximum_weight += points_possible * weight_change
-        running_lowest.append(100 * weight_score)
         running_highest.append(100 * not_graded_score)
+        running_lowest.append(100 * weight_score)
         running_maximum.append(100 * maximum_weight)
 
-    running_maximum=[a_value/maximum_weight for a_value in running_maximum]
-    running_lowest=[a_value/maximum_weight for a_value in running_lowest]
-    running_highest=[a_value/maximum_weight for a_value in running_highest]
+    running_highest = [a_value/maximum_weight for a_value in running_highest]
+    running_lowest = [a_value/maximum_weight for a_value in running_lowest]
+    running_maximum = [a_value/maximum_weight for a_value in running_maximum]
     running_dates=[]
+    print ("Below are the Highest, Lowest, and Maximum plot points:")
+    print (running_highest)
+    print (running_lowest)
+    print (running_maximum)
 
     for a_submission in submissions:
         running_dates.append(a_submission["assignment"]["due_at"])
