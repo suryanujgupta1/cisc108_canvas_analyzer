@@ -116,13 +116,13 @@ loops until they type in a valid ID. You will need to use the input function to 
 def summarize_points(submissions:[dict]):
     points_obtained=0
     points_possible_so_far=0
-    for a_sub in submissions:
-        if a_sub["score"] is not None:
-            group_weight = a_sub["assignment"]["group"]["group_weight"]
-            score = a_sub["score"] * group_weight
+    for a_submission in submissions:
+        if a_submission["score"] is not None:
+            group_weight = a_submission["assignment"]["group"]["group_weight"]
+            score = a_submission["score"] * group_weight
             points_obtained += score
             current_grade = round(((points_obtained / score) * 100), 1)
-            points = a_sub["assignment"]["points_possible"] * group_weight
+            points = a_submission["assignment"]["points_possible"] * group_weight
             points_possible_so_far += points
         print("Current Grade: " + str(current_grade))
         print("Points possible so far: " + str(points_possible_so_far))
@@ -188,41 +188,46 @@ and label the Y-axis as "Number of Assignments".
 
 # 10) plot_grade_trends
 def plot_grade_trends (submissions:dict):
-    lowest=[]
-    highest=[]
-    maximum=[]
+    running_lowest=[]
+    running_highest=[]
+    running_maximum=[]
     weight_score=0
-    maxweight_score=0
-    notgradedscore=0
-    for a_sub in submissions:
-        weightchanger=a_sub["assignment"]["group"]["group_weight"]
+    maximum_weight=0
+    not_graded_score=0
+    for a_submission in submissions:
+        weight_change=a_submission["assignment"]["group"]["group_weight"]
         score=0
-        if a_sub["score"]:
-            score=a_sub["score"]
+        if a_submission["score"]:
+            score=a_submission["score"]
         else:
-            score=0
-        weight_score+=score*weightchanger
-        points_possible=a_sub["assignment"]["points_possible"]
-
-        if a_sub["graded_at"] is not None:
-            notgradedscore+=points_possible*weightchanger
+            score
+        weight_score+=score*weight_change
+        points_possible=a_submission["assignment"]["points_possible"]
+        if a_submission["graded_at"] is not None:
+            not_graded_score+=points_possible*weight_change
         else:
-            notgradedscore+=score*weightchanger
+            not_graded_score+=score*weight_change
 
-        maximum=[avalue/maxweight_score for avalue in maximum]
-        lowest=[avalue/maxweight_score for avalue in lowest]
-        highest=[avalue/maxweight_score for avalue in highest]
-        running_dates=[]
-        print(maximum)
-        print(maxweight_score)
-        for a_sub in submissions:
-            running_dates.append(a_sub["assignment"]["due_at"])
-            plt.plot(running_dates, highest, label="Highest")
-            plt.plot(running_dates, lowest, label="Lowest")
-            plt.plot(running_dates, maximum, label="Maximum")
-            plt.title("Grade Trend")
-            plt.ylabel("Grade")
-            plt.show()
+        maximum_weight += points_possible * weight_change
+        running_lowest.append(100 * weight_score)
+        running_highest.append(100 * not_graded_score)
+        running_maximum.append(100 * maximum_weight)
+
+    running_maximum=[a_value/maximum_weight for a_value in running_maximum]
+    running_lowest=[a_value/maximum_weight for a_value in running_lowest]
+    running_highest=[a_value/maximum_weight for a_value in running_highest]
+    running_dates=[]
+
+    for a_submission in submissions:
+        running_dates.append(a_submission["assignment"]["due_at"])
+
+    plt.plot(running_dates, running_highest, label="Highest")
+    plt.plot(running_dates, running_lowest, label="Lowest")
+    plt.plot(running_dates, running_maximum, label="Maximum")
+    plt.title("Grade Trend")
+    plt.ylabel("Grade")
+    plt.xlabel("Date")
+    plt.show()
 
 '''
 Consumes a list of Submission dictionaries and plots the grade trend of the submissions as a line plot.
